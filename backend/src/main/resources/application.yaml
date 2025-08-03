@@ -1,9 +1,5 @@
 spring:
-  profiles:
-    active: awss3
-  cloud:
-    config:
-      server:
-        awss3:
-          region: us-east-1
-          bucket: bucket1
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1

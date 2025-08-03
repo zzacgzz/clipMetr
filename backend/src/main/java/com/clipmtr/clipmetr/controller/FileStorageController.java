@@ -1,24 +1,25 @@
 package com.clipmtr.clipmetr.controller;
 
 
-import com.amazonaws.Response;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.clipmtr.clipmetr.dto.BucketsDTO;
+import com.clipmtr.clipmetr.dto.S3ObjectsDTO;
 import com.clipmtr.clipmetr.service.S3Service;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @Tag(name = "aws", description = "Amazon S3 service")
@@ -79,10 +80,68 @@ public class FileStorageController {
             value = "/create/{bucketName}",
             produces = {"application/json"}
     )
-    ResponseEntity<Bucket> create(@ApiParam(value = "", required = true) @PathVariable String bucketName) {
+    ResponseEntity<Bucket> create(@ApiParam(required = true) @PathVariable String bucketName) {
 
         return new ResponseEntity<>(s3Service.createBucket(bucketName), HttpStatus.OK);
     }
+
+    @Operation(
+            operationId = "Upload new video",
+            summary = "Upload new video to S3",
+            description = "New bucket",
+            tags = {"aws"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ok",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Bucket.class))}),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "Bucket exists",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = RuntimeException.class))}),
+
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "AWS Internal Error",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = AmazonS3Exception.class))})
+            }
+
+    )
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/upload",
+            produces = {"application/json"},
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
+
+    )
+    ResponseEntity<PutObjectResult> uploadVideo(@RequestPart() MultipartFile file) throws IOException {
+
+        return new ResponseEntity<>(s3Service.uploadFile(file), HttpStatus.OK);
+    }
+
+
+    @Operation(
+            operationId = "Get bucket objects",
+            summary = "Get buckets objects..",
+            description = "Bucket Objects",
+            tags = {"aws"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ok",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = S3ObjectsDTO.class))}
+                    )})
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/objects/{bucketName}",
+            produces = {"application/json"}
+    )
+    ResponseEntity<S3ObjectsDTO> buckets(@ApiParam(required = true) @PathVariable String bucketName) {
+
+        return new ResponseEntity<>(s3Service.getBucketObjects(bucketName), HttpStatus.OK);
+    }
+
+
 
 
 
