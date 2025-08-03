@@ -1,0 +1,123 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.acg</groupId>
+        <artifactId>clipMetr</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>openapi</artifactId>
+    <name>openapi</name>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>openapi-generator</artifactId>
+            <version>7.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>openapi-generator-cli</artifactId>
+            <version>7.14.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>openapi-generator-maven-plugin</artifactId>
+            <version>7.14.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--            <plugin>-->
+            <!--                <groupId>org.openapitools</groupId>-->
+            <!--                <artifactId>openapi-generator-maven-plugin</artifactId>-->
+            <!--                <version>7.8.0</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>generate</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <inputSpec>-->
+            <!--                                ${project.basedir}/clipMetr.yaml-->
+            <!--                            </inputSpec>-->
+            <!--                            <generatorName>spring</generatorName>-->
+            <!--                            <apiPackage>com.clipmtr</apiPackage>-->
+            <!--                            <modelPackage>com.clipmtr.openapi.model</modelPackage>-->
+            <!--                            <supportingFilesToGenerate>-->
+            <!--                                ApiUtil.java-->
+            <!--                            </supportingFilesToGenerate>-->
+            <!--                            <configOptions>-->
+            <!--                                <delegatePattern>true</delegatePattern>-->
+            <!--                            </configOptions>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
+
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>7.8.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <configHelp>false</configHelp>
+                            <configOptions>
+                                <useJakartaEe>true</useJakartaEe>
+                                <interfaceOnly>true</interfaceOnly>
+                                <serializableModel>true</serializableModel>
+                                <skipDefaultInterface>true</skipDefaultInterface>
+                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                                <useOptional>false</useOptional>
+                            </configOptions>
+                            <inputSpec>
+                                ${project.basedir}/clipMetr.yaml
+                            </inputSpec>
+                            <generatorName>spring</generatorName>
+                            <apiPackage>com.clipmtr</apiPackage>
+                            <modelPackage>com.clipmtr.openapi.model</modelPackage>
+
+
+
+
+
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

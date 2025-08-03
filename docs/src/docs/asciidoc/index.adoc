@@ -1,0 +1,42 @@
+= ClipMetr
+Doc Writer <alejandrocg1599@gmail.com>
+2025-08-02
+:revnumber: +{project-version}+
+:example-caption!:
+
+
+This is document contains different forms that are used in the software cycle.
+
+== Introduction
+
+This project does something.
+We just haven't decided what that is yet.
+
+== Source Code
+
+[source,java]
+.Java code from project
+----
+
+----
+
+This page was built by the following command:
+
+ $ mvn
+
+== Images
+
+[.thumb]
+
+
+== Attributes
+
+.Built-in
+asciidoctor-version:: {asciidoctor-version}
+safe-mode-name:: {safe-mode-name}
+docdir:: {docdir}
+docfile:: {docfile}
+imagesdir:: {imagesdir}
+
+
+WARNING: Includes can be tricky!
