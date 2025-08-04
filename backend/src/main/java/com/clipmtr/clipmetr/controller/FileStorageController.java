@@ -4,10 +4,10 @@ package com.clipmtr.clipmetr.controller;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3Object;
 import com.clipmtr.clipmetr.dto.BucketsDTO;
 import com.clipmtr.clipmetr.dto.S3ObjectsDTO;
 import com.clipmtr.clipmetr.service.S3Service;
-import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -77,10 +77,10 @@ public class FileStorageController {
     )
     @RequestMapping(
             method = RequestMethod.PUT,
-            value = "/create/{bucketName}",
+            value = "/create{bucketName}",
             produces = {"application/json"}
     )
-    ResponseEntity<Bucket> create(@ApiParam(required = true) @PathVariable String bucketName) {
+    ResponseEntity<Bucket> create(@PathVariable @RequestParam String bucketName) {
 
         return new ResponseEntity<>(s3Service.createBucket(bucketName), HttpStatus.OK);
     }
@@ -133,15 +133,37 @@ public class FileStorageController {
                     )})
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/objects/{bucketName}",
+            value = "/objects",
             produces = {"application/json"}
     )
-    ResponseEntity<S3ObjectsDTO> buckets(@ApiParam(required = true) @PathVariable String bucketName) {
+    ResponseEntity<S3ObjectsDTO> objects() {
 
-        return new ResponseEntity<>(s3Service.getBucketObjects(bucketName), HttpStatus.OK);
+        return new ResponseEntity<>(s3Service.getBucketObjects(), HttpStatus.OK);
     }
 
 
+
+    @Operation(
+            operationId = "Get S3 object",
+            summary = "Get S3 object",
+            description = "Specific Object",
+            tags = {"aws"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ok",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = S3Object.class))}
+                    )})
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/object/{key}",
+            produces = {"application/json"}
+    )
+    ResponseEntity<S3Object> object(
+                                    @PathVariable @RequestParam String key) {
+
+        return new ResponseEntity<>(s3Service.getObject(key), HttpStatus.OK);
+    }
 
 
 

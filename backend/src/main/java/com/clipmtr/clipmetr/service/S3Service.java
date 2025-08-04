@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.clipmtr.clipmetr.dto.BucketsDTO;
 import com.clipmtr.clipmetr.dto.S3ObjectsDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,10 +18,13 @@ import java.util.*;
 @Service
 public class S3Service {
 
-    String cliprBucketName = "acg-bucket-444-for-clipmetr";
+
+    @Value("${clipMetr.aws.config.bucket}")
+    private String cliprBucketName;
 
     private final AmazonS3 amazonS3;
     public S3Service() {
+
         this.amazonS3 = AmazonS3ClientBuilder.standard()
                 .build();
 
@@ -71,9 +75,12 @@ public class S3Service {
 
     }
 
-    public S3ObjectsDTO getBucketObjects(String bucketName) {
-        return new S3ObjectsDTO(amazonS3.listObjectsV2(bucketName).getObjectSummaries());
+    public S3ObjectsDTO getBucketObjects() {
+        return new S3ObjectsDTO(amazonS3.listObjectsV2(cliprBucketName).getObjectSummaries());
     }
 
 
+    public S3Object getObject(String key) {
+        return amazonS3.getObject(cliprBucketName, key);
+    }
 }

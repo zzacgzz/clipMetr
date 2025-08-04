@@ -3,3 +3,9 @@ spring:
     multipart:
       max-file-size: -1
       max-request-size: -1
+
+clipMetr:
+  aws:
+    config:
+      bucket: "acg-bucket-444-for-clipmetr"
+
