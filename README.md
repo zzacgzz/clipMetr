@@ -12,3 +12,6 @@ What the project will actually does is allow a user to upload a video and then b
 - **AWS S3** for video storage
 - **AWS EC2** for API deployment
 - **Asciidoctor** for project documentation
+
+
+[EC2 Instance](http://ec2-18-144-72-58.us-west-1.compute.amazonaws.com:8080/swagger-ui/index.html#/)
